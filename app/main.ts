@@ -83,7 +83,7 @@ async function startExplorer() {
 	explorer.getApp().use(helmet.referrerPolicy());
 	explorer.getApp().use(helmet.noSniff());
 	/* eslint-disable */
-	explorer.getApp().use(helmet.frameguard({ action: 'SAMEORIGIN' }));
+	explorer.getApp().use(helmet.frameguard({ action: 'sameorigin' }));
 	explorer.getApp().use(
 		helmet.contentSecurityPolicy({
 			directives: {
