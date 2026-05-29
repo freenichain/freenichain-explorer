@@ -71,6 +71,7 @@ class Broadcaster extends WebSocket.Server {
 }
 
 let server;
+let connections = [];
 let explorer;
 async function startExplorer() {
 	explorer = new Explorer();
@@ -126,19 +127,19 @@ async function startExplorer() {
 		);
 		logger.info(`pid is ${process.pid}`);
 	});
+
+	/* eslint-disable */
+	server.on('connection', connection => {
+		connections.push(connection);
+		connection.on(
+			'close',
+			() => (connections = connections.filter(curr => curr !== connection))
+		);
+	});
+	/* eslint-enable */
 }
 
 startExplorer();
-/* eslint-disable */
-let connections = [];
-server.on('connection', connection => {
-	connections.push(connection);
-	connection.on(
-		'close',
-		() => (connections = connections.filter(curr => curr !== connection))
-	);
-});
-/* eslint-enable */
 /*
  * This function is called when you want the server to die gracefully
  * i.e. wait for existing connections
