@@ -23,8 +23,7 @@ RUN npm install --legacy-peer-deps && npm run build && npm prune --production
 # Build client
 RUN cd client && \
     export NODE_OPTIONS=--openssl-legacy-provider && \
-    npm install --legacy-peer-deps && \
-    npm prune --production && \
+    npm install --legacy-peer-deps --ignore-scripts && \
     npm run build
 
 RUN apk del npm-deps
