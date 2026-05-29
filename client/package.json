@@ -76,7 +76,6 @@
 		"request-promise-native": "^1.0.9"
 	},
 	"scripts": {
-		"preinstall": "([ ! -f package-lock.json ] && npm install --package-lock-only --ignore-scripts --no-audit); npx npm-force-resolutions",
 		"start": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
 		"build": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
 		"test": "react-scripts test --env=jsdom",
