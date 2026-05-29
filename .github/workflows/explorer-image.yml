@@ -1,0 +1,113 @@
+name: explorer-image
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      push_to_ecr:
+        description: Push image to ECR
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  ECR_REPOSITORY_NAME: explorer
+
+jobs:
+  build:
+    name: build-arm64
+    runs-on: ubuntu-24.04
+    outputs:
+      image-tag: ${{ steps.meta.outputs.image_tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Resolve image tag
+        id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_REF_TYPE:-}" == "tag" ]]; then
+            tag="${GITHUB_REF_NAME#v}-arm64"
+          else
+            tag="${GITHUB_SHA:0:7}-arm64"
+          fi
+          echo "image_tag=${tag}" >> "$GITHUB_OUTPUT"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+        with:
+          platforms: arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build image (validation)
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/arm64
+          push: false
+          tags: explorer:${{ steps.meta.outputs.image_tag }}
+          cache-from: type=gha,scope=explorer
+          cache-to: type=gha,mode=max,scope=explorer
+
+  publish:
+    name: publish-ecr
+    runs-on: ubuntu-24.04
+    needs:
+      - build
+    if: github.ref_type == 'tag' || inputs.push_to_ecr == true
+    environment: Development
+    steps:
+      - name: Validate environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${{ vars.AWS_REGION }}"
+          test -n "${{ vars.ECR_REGISTRY }}"
+          test -n "${{ vars.AWS_ECR_PUSH_ROLE_ARN }}"
+
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.AWS_ECR_PUSH_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+        with:
+          platforms: arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build and push to ECR
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/arm64
+          push: true
+          tags: |
+            ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_NAME }}:${{ needs.build.outputs.image-tag }}
+            ${{ vars.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY_NAME }}:latest-arm64
+          cache-from: type=gha,scope=explorer
+          cache-to: type=gha,mode=max,scope=explorer

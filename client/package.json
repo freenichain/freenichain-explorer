@@ -77,10 +77,10 @@
 	},
 	"scripts": {
 		"preinstall": "([ ! -f package-lock.json ] && npm install --package-lock-only --ignore-scripts --no-audit); npx npm-force-resolutions",
-		"start": "react-scripts start",
-		"build": "react-scripts build",
+		"start": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+		"build": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
 		"test": "react-scripts test --env=jsdom",
-		"test:ci": "cross-env CI=true react-scripts test --env=jsdom",
+		"test:ci": "cross-env NODE_OPTIONS=--openssl-legacy-provider cross-env CI=true react-scripts test --env=jsdom",
 		"eject": "react-scripts eject",
 		"lint": "eslint"
 	},
@@ -162,5 +162,8 @@
 				}
 			}
 		]
+	},
+	"engines": {
+		"node": ">=24.0.0"
 	}
 }
