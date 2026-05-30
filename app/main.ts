@@ -94,7 +94,7 @@ async function startExplorer() {
 				objectSrc: ["'self'"],
 				frameSrc: ["'self'"],
 				fontSrc: ["'self'"],
-				imgSrc: ["'self' data: https:; "]
+				imgSrc: ["'self'", 'data:', 'https:']
 			}
 		})
 	);
@@ -147,6 +147,10 @@ startExplorer();
 
 const shutDown = function(exitCode) {
 	logger.info('Received kill signal, shutting down gracefully');
+	if (!server) {
+		process.exit(exitCode);
+		return;
+	}
 	server.close(() => {
 		explorer.close();
 		logger.info('Closed out connections');
