@@ -129,7 +129,7 @@ export class PgService {
 				 * Process asynchronous requests in the meantime.
 				 */
 				logger.error('error when connecting to db:', err);
-				setTimeout(this.handleDisconnect, 2000);
+				setTimeout(this.handleDisconnect.bind(this), 2000);
 			}
 		}
 	}
@@ -585,5 +585,4 @@ export class PgService {
 			});
 		});
 	}
-	
 }
