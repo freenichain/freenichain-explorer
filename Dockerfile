@@ -18,12 +18,12 @@ COPY . .
 RUN apk add --no-cache --virtual npm-deps python3 make g++ bash
 
 # Build server
-RUN npm install --legacy-peer-deps && npm run build && npm prune --production
+RUN npm ci && npm run build && npm prune --production
 
 # Build client
 RUN cd client && \
     export NODE_OPTIONS=--openssl-legacy-provider && \
-    npm install --legacy-peer-deps --ignore-scripts && \
+    npm ci --ignore-scripts && \
     npm run build
 
 RUN apk del npm-deps
