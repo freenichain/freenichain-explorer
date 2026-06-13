@@ -1,0 +1,35 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": ["config:recommended"],
+	"timezone": "UTC",
+	"schedule": ["before 6am on Monday"],
+	"labels": ["dependencies"],
+	"automerge": false,
+	"packageRules": [
+		{
+			"description": "Group all non-major updates into one PR",
+			"matchUpdateTypes": ["minor", "patch", "digest"],
+			"groupName": "all non-major dependencies"
+		},
+		{
+			"description": "Group base image updates and pin digests",
+			"matchManagers": ["dockerfile"],
+			"groupName": "base image",
+			"pinDigests": true
+		},
+		{
+			"description": "Group GitHub Actions updates",
+			"matchManagers": ["github-actions"],
+			"groupName": "GitHub Actions"
+		},
+		{
+			"description": "Label major updates as breaking",
+			"matchUpdateTypes": ["major"],
+			"labels": ["dependencies", "breaking-change"]
+		}
+	],
+	"vulnerabilityAlerts": {
+		"labels": ["security"]
+	},
+	"osvVulnerabilityAlerts": true
+}
