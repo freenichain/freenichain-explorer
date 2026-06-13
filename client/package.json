@@ -76,11 +76,10 @@
 		"request-promise-native": "^1.0.9"
 	},
 	"scripts": {
-		"preinstall": "([ ! -f package-lock.json ] && npm install --package-lock-only --ignore-scripts --no-audit); npx npm-force-resolutions",
-		"start": "react-scripts start",
-		"build": "react-scripts build",
+		"start": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+		"build": "cross-env NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
 		"test": "react-scripts test --env=jsdom",
-		"test:ci": "cross-env CI=true react-scripts test --env=jsdom",
+		"test:ci": "cross-env NODE_OPTIONS=--openssl-legacy-provider cross-env CI=true react-scripts test --env=jsdom",
 		"eject": "react-scripts eject",
 		"lint": "eslint"
 	},
@@ -92,7 +91,6 @@
 		"@wdio/local-runner": "^8.15.10",
 		"@wdio/mocha-framework": "^8.15.10",
 		"@wdio/selenium-standalone-service": "^8.15.0",
-		"@wdio/sync": "^7.32.4",
 		"cross-env": "^5.2.0",
 		"enzyme": "^3.3.0",
 		"enzyme-adapter-react-16": "^1.1.1",
@@ -162,5 +160,8 @@
 				}
 			}
 		]
+	},
+	"engines": {
+		"node": ">=24.0.0"
 	}
 }

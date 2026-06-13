@@ -71,6 +71,7 @@ class Broadcaster extends WebSocket.Server {
 }
 
 let server;
+let connections = [];
 let explorer;
 async function startExplorer() {
 	explorer = new Explorer();
@@ -83,7 +84,7 @@ async function startExplorer() {
 	explorer.getApp().use(helmet.referrerPolicy());
 	explorer.getApp().use(helmet.noSniff());
 	/* eslint-disable */
-	explorer.getApp().use(helmet.frameguard({ action: 'SAMEORIGIN' }));
+	explorer.getApp().use(helmet.frameguard({ action: 'sameorigin' }));
 	explorer.getApp().use(
 		helmet.contentSecurityPolicy({
 			directives: {
@@ -93,7 +94,7 @@ async function startExplorer() {
 				objectSrc: ["'self'"],
 				frameSrc: ["'self'"],
 				fontSrc: ["'self'"],
-				imgSrc: ["'self' data: https:; "]
+				imgSrc: ["'self'", 'data:', 'https:']
 			}
 		})
 	);
@@ -126,19 +127,19 @@ async function startExplorer() {
 		);
 		logger.info(`pid is ${process.pid}`);
 	});
+
+	/* eslint-disable */
+	server.on('connection', connection => {
+		connections.push(connection);
+		connection.on(
+			'close',
+			() => (connections = connections.filter(curr => curr !== connection))
+		);
+	});
+	/* eslint-enable */
 }
 
 startExplorer();
-/* eslint-disable */
-let connections = [];
-server.on('connection', connection => {
-	connections.push(connection);
-	connection.on(
-		'close',
-		() => (connections = connections.filter(curr => curr !== connection))
-	);
-});
-/* eslint-enable */
 /*
  * This function is called when you want the server to die gracefully
  * i.e. wait for existing connections
@@ -146,6 +147,10 @@ server.on('connection', connection => {
 
 const shutDown = function(exitCode) {
 	logger.info('Received kill signal, shutting down gracefully');
+	if (!server) {
+		process.exit(exitCode);
+		return;
+	}
 	server.close(() => {
 		explorer.close();
 		logger.info('Closed out connections');
