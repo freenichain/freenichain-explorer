@@ -13,7 +13,7 @@
 		"@svgr/webpack": "8.1.0",
 		"ajv": "^8.20.0",
 		"aphrodite": "^1.2.5",
-		"axios": "^0.31.1",
+		"axios": "^0.32.0",
 		"body-parser": "^1.20.5",
 		"bootstrap": "^4.6.2",
 		"braces": "^3.0.3",
@@ -72,7 +72,9 @@
 		"serialize-javascript": "^7.0.5",
 		"slick-carousel": "^1.8.1",
 		"superagent": "^5.0.5",
+		"tar-fs": "^3.1.2",
 		"typeface-roboto": "1.1.13",
+		"underscore": "^1.13.8",
 		"util": "^0.12.5",
 		"ws": "^8.21.0"
 	},
