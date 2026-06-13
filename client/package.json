@@ -13,7 +13,7 @@
 		"@svgr/webpack": "8.1.0",
 		"ajv": "^8.20.0",
 		"aphrodite": "^1.2.5",
-		"axios": "^0.31.1",
+		"axios": "^0.32.0",
 		"body-parser": "^1.20.5",
 		"bootstrap": "^4.6.2",
 		"braces": "^3.0.3",
