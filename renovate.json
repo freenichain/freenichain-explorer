@@ -31,5 +31,7 @@
 	"vulnerabilityAlerts": {
 		"labels": ["security"]
 	},
-	"osvVulnerabilityAlerts": true
+	"osvVulnerabilityAlerts": true,
+	"reviewers": ["maksmore"],
+	"prBodyNotes": ["cc @erionrb"]
 }
