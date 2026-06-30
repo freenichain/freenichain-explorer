@@ -1,18 +1,18 @@
 # SPDX-License-Identifier: Apache-2.0
 
-python-markdown-math==0.2
+python-markdown-math==0.9
 
-alabaster==0.7.8
-Babel==2.9.1
-docutils==0.12
+alabaster==0.7.16
+Babel==2.18.0
+docutils==0.23
 imagesize==0.7.1
 Jinja2==3.1.6
 MarkupSafe==0.23
 Pygments==2.20.0
-pytz==2016.4
-six==1.10.0
-snowballstemmer==1.2.1
-Sphinx==1.7.2
-sphinx-rtd-theme==0.2.5b2
-recommonmark==0.4.0
-sphinxcontrib-contentui==0.2.2
+pytz==2016.10
+six==1.17.0
+snowballstemmer==1.9.1
+Sphinx==1.8.6
+sphinx-rtd-theme==0.5.2
+recommonmark==0.7.1
+sphinxcontrib-contentui==0.2.5
