@@ -79,7 +79,7 @@
 		"@types/jsonwebtoken": "^8.5.0",
 		"@types/log4js": "^2.3.5",
 		"@types/mocha": "^8.0.4",
-		"@types/node": "^20.0.0",
+		"@types/node": "^24.0.0",
 		"@types/passport": "^1.0.4",
 		"@types/passport-local": "^1.0.33",
 		"@types/pg": "^8.10.2",
