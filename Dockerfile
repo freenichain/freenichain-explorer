@@ -6,7 +6,7 @@
 #   - Added --legacy-peer-deps for React 16 client deps
 #   - NODE_OPTIONS=--openssl-legacy-provider for react-scripts on Node 17+
 
-FROM node:24-alpine3.23@sha256:7c078d435026a97c8ff97b00d70e2f6ec6298a440e25a9485a9af414d5d37009 AS build
+FROM node:24-alpine3.23@sha256:9ec4a2e289874ed0d722e1772ec2de45d2801541db8612f3638b26f128c69ac2 AS build
 
 ENV DEFAULT_WORKDIR=/opt
 ENV EXPLORER_APP_PATH=$DEFAULT_WORKDIR/explorer
@@ -38,7 +38,7 @@ RUN find node_modules -name "*.md" -delete 2>/dev/null || true && \
            node_modules/rxjs/_esm5/ \
            node_modules/rxjs/_esm2015/ 2>/dev/null || true
 
-FROM node:24-alpine3.23@sha256:7c078d435026a97c8ff97b00d70e2f6ec6298a440e25a9485a9af414d5d37009
+FROM node:24-alpine3.23@sha256:9ec4a2e289874ed0d722e1772ec2de45d2801541db8612f3638b26f128c69ac2
 
 ENV DATABASE_HOST=127.0.0.1
 ENV DATABASE_PORT=5432
