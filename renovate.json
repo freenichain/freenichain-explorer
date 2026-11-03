@@ -5,6 +5,7 @@
 	"schedule": ["before 6am on Monday"],
 	"labels": ["dependencies"],
 	"automerge": false,
+	"enabled": false,
 	"packageRules": [
 		{
 			"description": "Group all non-major updates into one PR",
